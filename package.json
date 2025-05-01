@@ -2,13 +2,26 @@
   "name": "background-job-queue",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
+  "main": "index.ts",
   "scripts": {
+    "dev": "nodemon --watch src --exec node --env-file=.env -r ts-node/register src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.8.0"
+  "packageManager": "pnpm@10.8.0",
+  "dependencies": {
+    "ioredis": "^5.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  },
+  "peerDependencies": {
+    "@types/node": "^22.15.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  }
 }
