@@ -18,6 +18,7 @@ export enum TaskStatus {
 export type Task<T> = {
   id: string;
   name: string;
+  type: string;
   data: T;
   options: TaskOptions;
 };

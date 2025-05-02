@@ -1,20 +1,21 @@
+import { getJobForTaskType } from "../factories/JobFactory";
 import { Queue } from "../queue/queue";
 import { Task } from "../types/task";
 
 export class Runner<T> {
   private queue: Queue<T>;
-  private processTask: (task: Task<T>) => Promise<void>;
 
-  constructor(queue: Queue<T>, processTask: (task: Task<T>) => Promise<void>) {
+  constructor(queue: Queue<T>) {
     this.queue = queue;
-    this.processTask = processTask;
   }
 
   async run(task: Task<T>): Promise<void> {
     const newTotalAttempts = task.options.retry.totalAttempts + 1;
+    const job = getJobForTaskType(task.type);
     try {
-      await this.processTask(task);
+      await job.run(task);
     } catch (error) {
+      console.log(`Error running task ${task.name}: ${error}`);
       // retry the task if it fails
       await this.queue.addTask({
         ...task,

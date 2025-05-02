@@ -4,22 +4,19 @@ import { Runner } from "./runner.ts";
 
 export class Worker<T> {
   private queue: Queue<T>;
-  private processTask: (task: Task<T>) => Promise<void>;
   private concurrency: number;
   private activeTasks: Map<string, Promise<void>> = new Map();
 
   constructor(
     queue: Queue<T>,
-    processTask: (task: Task<T>) => Promise<void>,
     { concurrency = 1 } = {}
   ) {
-    this.processTask = processTask;
     this.queue = queue;
     this.concurrency = concurrency;
   }
 
   async start() {
-    const runner = new Runner(this.queue, this.processTask);
+    const runner = new Runner(this.queue);
     while (true) {
       const task = await this.queue.getOrWaitForTask();
       if (task == null) {
